@@ -25,6 +25,7 @@ public class TreeView<T> extends Component {
 	private T root;
 	private TreeViewPopulator<T> populator;
 	private String[] marks;
+	private boolean opened = true;
 	private ArrayList<TreeView<T>> sons;
 	
 	public TreeView(T root, TreeViewPopulator<T> populator) {
@@ -44,8 +45,9 @@ public class TreeView<T> extends Component {
 			sb.append(m).append(MARKER_SPACE);
 		
 		sb.append(populator.getName(root)).append("\n");
-		for (TreeView<T> son : sons)
-			son.print(sb);
+		if (isOpened())
+			for (TreeView<T> son : sons)
+				son.print(sb);
 	}
 
 	public T getRoot() {
@@ -72,6 +74,14 @@ public class TreeView<T> extends Component {
 
 	public ArrayList<TreeView<T>> getSons() {
 		return sons;
+	}
+
+	public boolean isOpened() {
+		return opened;
+	}
+
+	public void setOpened(boolean opened) {
+		this.opened = opened;
 	}
 	
 	

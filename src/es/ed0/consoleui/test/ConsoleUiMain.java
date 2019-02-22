@@ -11,8 +11,10 @@ import java.util.List;
 import es.ed0.consoleui.ConsoleUi;
 import es.ed0.consoleui.input.CommandListener;
 import es.ed0.consoleui.ui.Alignment;
+import es.ed0.consoleui.ui.BorderStyle;
 import es.ed0.consoleui.ui.EntryTable;
 import es.ed0.consoleui.ui.Panel;
+import es.ed0.consoleui.ui.ProgressBar;
 import es.ed0.consoleui.ui.Separator;
 import es.ed0.consoleui.ui.TreeView;
 import es.ed0.consoleui.ui.TreeView.TreeViewPopulator;
@@ -79,11 +81,11 @@ public class ConsoleUiMain {
 		ui.print(panel);
 		
 		List<Pojo> pojos = Arrays.asList(new Pojo[] {
-				new Pojo("hi", "wadup", 12), new Pojo("holita", "surnamejesadas\ndsaddasaadsasddssadadj", 1900),
+				new Pojo("hi", "wadup", 12), new Pojo("holita", "surnamejesadasdsaddasaadsasddssadadj", 1900),
 				new Pojo("sandi", "gominola", 24), new Pojo("juanelea", "blepblep", 10),
 		});
 		
-		EntryTable<Pojo> table = new EntryTable<Pojo>(pojos, "name", "surname", "age");
+		EntryTable<Pojo> table = new EntryTable<Pojo>(BorderStyle.hollow, pojos, "name", "surname", "age");
 		table.setTablePopulator(new TablePopulator<Pojo>() {
 			@Override
 			public ArrayList<String> getViewForRow(int i, Pojo entry) {
@@ -103,19 +105,26 @@ public class ConsoleUiMain {
 		ui.printList(Arrays.asList(new String[] { "entry1", "entry2", "entry678" }));
 		
 		
-		TreeView<File> files = new TreeView<File>(new File("D:/Backups"), new TreeViewPopulator<File>() {
-			@Override
-			public String getName(File item) {
-				return item.getName();
-			}
-			@Override
-			public File[] getChildren(File item) {
-				return item.listFiles();
-			}
-		});
+//		TreeView<File> files = new TreeView<File>(new File("D:/Backups"), new TreeViewPopulator<File>() {
+//			@Override
+//			public String getName(File item) {
+//				return item.getName();
+//			}
+//			@Override
+//			public File[] getChildren(File item) {
+//				return item.listFiles();
+//			}
+//		});
 		
-		ui.print(files);
+		// ui.print(files);
 		
+		ProgressBar bar = new ProgressBar(20, 20, BorderStyle.sql);
+		
+		bar.setMax(25);
+		bar.setValue(17);
+		
+		
+		ui.print(bar);
 		
 		
 		

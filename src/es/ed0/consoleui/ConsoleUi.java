@@ -30,7 +30,7 @@ public class ConsoleUi {
 	 * - line +
 	 * - list + 
 	 * - banners*
-	 * - hierarchy view
+	 * - hierarchy view +
 	 * - line margin +
 	 * - set output stream +
 	 * - panel (padding, etc) +
@@ -39,7 +39,6 @@ public class ConsoleUi {
 	
 	private Scanner t;
 	private PrintStream out;
-	private InputStream in;
 	private int lastPrintLength = 10;
 	private int lineSpacing = 1;
 	
@@ -158,7 +157,6 @@ public class ConsoleUi {
 	}
 	
 	public void setInputStream(InputStream stream) {
-		this.in = stream;
 		t.close();
 		t = new Scanner(stream);
 	}
