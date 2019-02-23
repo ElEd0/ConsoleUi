@@ -16,6 +16,7 @@ import es.ed0.consoleui.ui.EntryTable;
 import es.ed0.consoleui.ui.Panel;
 import es.ed0.consoleui.ui.ProgressBar;
 import es.ed0.consoleui.ui.Separator;
+import es.ed0.consoleui.ui.Text;
 import es.ed0.consoleui.ui.TreeView;
 import es.ed0.consoleui.ui.TreeView.TreeViewPopulator;
 import es.ed0.consoleui.ui.EntryTable.TablePopulator;
@@ -63,12 +64,12 @@ public class ConsoleUiMain {
 		
 		ui.setLineSpacing(3);
 		
-		Panel inside = new Panel("menuda movida tron", "okei tt");
+		Panel inside = new Panel("menuda movida tron", new Text("okei tt"));
 		
-		Panel panel = new Panel("Esto es un panel de prubea tt",
+		Panel panel = new Panel("Esto es un panel de prubea tt", new Text(
 				"erase una vez en un lugar de a saber donde que ocurrio una movida to tocha. "
 				+ "erase una vez en un lugar de a saber donde que ocurrio una movida to tocha.\n "
-				+ "erase una vez en un lugar de a saber donde que ocurrio una movida to tocha.");
+				+ "erase una vez en un lugar de a saber donde que ocurrio una movida to tocha."));
 		panel.add(new Separator(50));
 		panel.add("firmado por el ed0");
 		panel.add(new Separator(50));
@@ -78,10 +79,12 @@ public class ConsoleUiMain {
 		panel.setMaxWidth(50);
 		panel.setContentAlign(Alignment.right);
 		
+		panel.setTabulation(2);
+		
 		ui.print(panel);
 		
 		List<Pojo> pojos = Arrays.asList(new Pojo[] {
-				new Pojo("hi", "wadup", 12), new Pojo("holita", "surnamejesadasdsaddasaadsasddssadadj", 1900),
+				new Pojo("hi", "wadup", 12), new Pojo("holita", "surnamejesadasdsaddasdddddddddddddddddddddddddddddddddddasaadsasddssadadj", 1900),
 				new Pojo("sandi", "gominola", 24), new Pojo("juanelea", "blepblep", 10),
 		});
 		
@@ -99,13 +102,17 @@ public class ConsoleUiMain {
 		table.setColAlign(Alignment.center);
 		table.setEnumerate(true);
 		table.setEnumerate(false);
+		table.setTabulation(1);
 		
-		ui.print(table);
+		Panel tablePanel = new Panel(BorderStyle.unicode, "mira que guapa la tabla", table);
+		tablePanel.setMaxWidth(-1);
+		
+		ui.print(tablePanel);
 		
 		ui.printList(Arrays.asList(new String[] { "entry1", "entry2", "entry678" }));
 		
 		
-//		TreeView<File> files = new TreeView<File>(new File("D:/Backups"), new TreeViewPopulator<File>() {
+//		TreeView<File> files = new TreeView<File>(BorderStyle.unicode, new File("D:/Backups"), new TreeViewPopulator<File>() {
 //			@Override
 //			public String getName(File item) {
 //				return item.getName();
@@ -115,8 +122,8 @@ public class ConsoleUiMain {
 //				return item.listFiles();
 //			}
 //		});
-		
-		// ui.print(files);
+//		
+//		ui.print(files);
 		
 		ProgressBar bar = new ProgressBar(20, 20, BorderStyle.sql);
 		

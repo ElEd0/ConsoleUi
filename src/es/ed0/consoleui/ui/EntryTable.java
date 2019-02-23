@@ -8,14 +8,27 @@ import java.util.Arrays;
 import java.util.List;
 
 import es.ed0.consoleui.ui.BorderStyle.BorderPiece;
-
+/**
+ * Creates a console ui Table in which each row is represented by a object of type <code>T</code>. 
+ * @param <T> An object that represents a row entry
+ */
 public class EntryTable<T> extends Component {
 
+	/**
+	 * Interface required to inflate the EntryTable with data. 
+	 * The user must specify the data for each column for every entry
+	 * @param <T> An object that represents a row entry
+	 */
 	public interface TablePopulator<T> {
-		public ArrayList<String> getViewForRow(int i, T entry);
+		/**
+		 * Retrieve the data to insert into the table for the given entry 
+		 * <code>entry</code> with index <code>index</code>
+		 * @param index entry index inside the entry list
+		 * @param entry row entry
+		 * @return ArrarList containing one string for every column
+		 */
+		public ArrayList<String> getViewForRow(int index, T entry);
 	}
-	
-	// TODO styles
 	
 	private String[] cols;
 	private ArrayList<Integer> colWidths, rowHeights;
@@ -29,10 +42,25 @@ public class EntryTable<T> extends Component {
 	private int colMargin = 1;
 	private boolean enumerate = false;
 	
+	/**
+	 * Create a new EntryTable with the given columns and entries (rows). 
+	 * A {@link TablePopulator} is required to handle the table creation, you can do this via 
+	 * {@link #setTablePopulator(TablePopulator)}
+	 * @param entries Entry per row
+	 * @param cols table columns
+	 */
 	public EntryTable(List<T> entries, String... cols) {
 		this(BorderStyle.sql, entries, cols);
 	}
-	
+
+	/**
+	 * Create a new EntryTable with the given columns, entries (rows) and Border style. 
+	 * A {@link TablePopulator} is required to handle the table creation, you can do this via 
+	 * {@link #setTablePopulator(TablePopulator)}
+	 * @param style Border style for the table
+	 * @param entries Entry per row
+	 * @param cols table columns
+	 */
 	public EntryTable(BorderStyle style, List<T> entries, String... cols) {
 		this.entries = new ArrayList<T>(entries);
 		this.cols = cols;
@@ -49,10 +77,18 @@ public class EntryTable<T> extends Component {
 		rows = new ArrayList<>();
 		rowHeights = new ArrayList<Integer>();
 		for (int i = 0; i < entries.size(); i++) {
-			final ArrayList<String> views = populator.getViewForRow(i, entries.get(i));
+			List<String> views = populator.getViewForRow(i, entries.get(i));
 			if (enumerate)
 				views.add(0, (i + 1) + "");
-			rows.add(views);
+			
+			// correct size
+			if (views.size() < cols.length)
+				for (int v = 0; v < (cols.length - views.size()); v++)
+					views.add("");
+			else if (views.size() > cols.length)
+				views = views.subList(0, cols.length);
+				
+			rows.add(new ArrayList<>(views));
 			int heighest = 1;
 			for (String data : views) {
 				int lineHeight = (data.length() - data.replaceAll("\n", "").length()) + 1;
@@ -77,49 +113,25 @@ public class EntryTable<T> extends Component {
 			}
 		}
 		
-		sb.append(printTopLine());
+		sb.append(printLine(BorderPiece.ds, BorderPiece.dsa, BorderPiece.sa));
 		sb.append(printData(Arrays.asList(cols)));
 		for (int i = 0; i < rows.size(); i++) {
-			sb.append(printMiddleLine());
+			sb.append(printLine(BorderPiece.wds, BorderPiece.wdsa, BorderPiece.wsa));
 			sb.append(printData(rows.get(i)));
 		}
-		sb.append(printBottomLine());
+		sb.append(printLine(BorderPiece.wd, BorderPiece.wda, BorderPiece.wa));
 		
 	}
 	
-	private String printTopLine() {
+	private String printLine(BorderPiece left, BorderPiece center, BorderPiece right) {
 		final StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < colWidths.size(); i++) {
-			if (i == 0) sb.append(style.getPiece(BorderPiece.ds));
-			else  sb.append(style.getPiece(BorderPiece.dsa));
+			if (i == 0) sb.append(style.getPiece(left));
+			else  sb.append(style.getPiece(center));
 			for (int m = 0; m < (colWidths.get(i) + (colMargin * 2)); m++)
 				sb.append(style.getPiece(BorderPiece.da));
 		}
-		sb.append(style.getPiece(BorderPiece.sa)).append("\n");
-		return sb.toString();
-	}
-	
-	private String printMiddleLine() {
-		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < colWidths.size(); i++) {
-			if (i == 0) sb.append(style.getPiece(BorderPiece.wds));
-			else  sb.append(style.getPiece(BorderPiece.wdsa));
-			for (int m = 0; m < (colWidths.get(i) + (colMargin * 2)); m++)
-				sb.append(style.getPiece(BorderPiece.da));
-		}
-		sb.append(style.getPiece(BorderPiece.wsa)).append("\n");
-		return sb.toString();
-	}
-	
-	private String printBottomLine() {
-		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < colWidths.size(); i++) {
-			if (i == 0) sb.append(style.getPiece(BorderPiece.wd));
-			else  sb.append(style.getPiece(BorderPiece.wda));
-			for (int m = 0; m < (colWidths.get(i) + (colMargin * 2)); m++)
-				sb.append(style.getPiece(BorderPiece.da));
-		}
-		sb.append(style.getPiece(BorderPiece.wa)).append("\n");
+		sb.append(style.getPiece(right)).append("\n");
 		return sb.toString();
 	}
 	
