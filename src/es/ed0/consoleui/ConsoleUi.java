@@ -44,7 +44,6 @@ public class ConsoleUi {
 	
 	private ArrayList<InputListener> listeners;
 	private ArrayList<String> commands;
-	private Thread inputThread;
 	
 	
 	public ConsoleUi() {
@@ -53,30 +52,6 @@ public class ConsoleUi {
 		commands = new ArrayList<String>();
 		listeners = new ArrayList<InputListener>();
 	}
-	
-	public void startInputThread() {
-		if (inputThread != null) {
-			inputThread.interrupt();
-		}
-		inputThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					dispatchInput(t.nextLine());
-				}
-			}
-		});
-		
-		inputThread.start();
-	}
-	
-	public void stopInputThread() {
-		if (inputThread != null) {
-			inputThread.interrupt();
-			inputThread = null;
-		}
-	}
-	
 	
 	private void dispatchInput(String line) {
 		if (line == null || line.equals(""))
@@ -103,27 +78,33 @@ public class ConsoleUi {
 				break;
 		}
 	}
+	/**
+	 * It will activate the user input and send the next entered line to the available
+	 * @param message
+	 */
+	public void promptInput(String message) {
+		print(message + " ");
+		dispatchInput(t.nextLine());
+	}
 	
 	/**
-	 * Prompt the given message and wait for a response. Note that this will enter in conflict with the
-	 * main input handler (if activated)
+	 * Prompt the given message and wait for a response.
 	 * @param message Prompt message
 	 * @return User input answer
 	 */
-	public String promptInput(String message) {
+	public String promptText(String message) {
 		out.print(message + "\t");
 		final String res = t.nextLine();
 		return res;
 	}
 	
 	/**
-	 * Prompt the given message and wait for a yes/no response. Note that this will enter in conflict with the
-	 * main input handler (if activated)
+	 * Prompt the given message and wait for a yes/no response.
 	 * @param message Prompt message
 	 * @return true if user entered "y" or "yes". Case insensitive
 	 */
 	public boolean promptAccept(String message) {
-		switch (promptInput(message).toLowerCase()) {
+		switch (promptText(message).toLowerCase()) {
 		case "y": case "yes": return true;
 		default: return false;
 		}
@@ -238,19 +219,13 @@ public class ConsoleUi {
 			addCommand(c);
 	}
 	/**
-	 * Add an inputListener to listen for user keyboard input. This will activate a thread that will constantly 
-	 * check for user input and it will dispatch it to the available inputListeners.<br>
-	 * Note this will enter in conflict with the prompt for input methods unless called while the user input is being processed. 
-	 * This means you cannot call {@link #promptInput(String)} or {@link #promptAccept(String)} while listening for input, but you can 
-	 * still use them when the input listener is triggered.<br>
+	 * Add an inputListener to listen for user keyboard input.
 	 * If a CommandListener is given, commands must be set using {@link #addCommand(String)} or {@link #addCommands(String...)} 
 	 * to trigger the {@link CommandListener#onCommand(String, String[])} method
 	 * @param listener listener to add
 	 */
 	public void addInputListener(InputListener listener) {
 		listeners.add(listener);
-		if (inputThread == null)
-			startInputThread();
 	}
 	
 	/**

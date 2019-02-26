@@ -4,6 +4,6 @@
 package es.ed0.consoleui.input;
 
 /**
- * 
+ * Interface that console ui input listeners have to implement. This interface does not implement any behaviour.
  */
 public interface InputListener { }

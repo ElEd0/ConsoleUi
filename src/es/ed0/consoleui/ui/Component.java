@@ -20,10 +20,13 @@ public abstract class Component {
 			content.append(tab.toString());
 			content.append(aux.replaceAll("\n", "\n" + tab.toString()));
 		}
+		if (isNewLine())
+			content.append("\n");
 		return content.toString();
 	}
 	
-	protected int tabulation = 0;
+	private int tabulation = 0;
+	private boolean newLine = true; 
 	
 	/**
 	 * Sets the tabulation for this component, this is, how many \t will be printed before the component
@@ -32,7 +35,28 @@ public abstract class Component {
 	public void setTabulation(int tabs) {
 		this.tabulation = tabs;
 	}
-	
+	/**
+	 * True if this component will append a line jump at its end
+	 * @return
+	 */
+	public boolean isNewLine() {
+		return newLine;
+	}
+
+	/**
+	 * Set whether the component will jump line after being printed
+	 * @param newLine jump line
+	 */
+	public void setNewLine(boolean newLine) {
+		this.newLine = newLine;
+	}
+
+	public int getWidth() {
+		final String toStr = toString();
+		final int index = toStr.indexOf('\n');
+		return index == -1 ? toStr.length() : index;
+	}
+
 	/**
 	 * Called when a component needs to be printed. The extending class must define the body and append its 
 	 * contents as string lines in the given string builder

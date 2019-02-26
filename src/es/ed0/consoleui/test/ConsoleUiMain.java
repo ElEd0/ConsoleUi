@@ -10,8 +10,10 @@ import java.util.List;
 
 import es.ed0.consoleui.ConsoleUi;
 import es.ed0.consoleui.input.CommandListener;
+import es.ed0.consoleui.input.LineListener;
 import es.ed0.consoleui.ui.Alignment;
 import es.ed0.consoleui.ui.BorderStyle;
+import es.ed0.consoleui.ui.Component;
 import es.ed0.consoleui.ui.EntryTable;
 import es.ed0.consoleui.ui.Panel;
 import es.ed0.consoleui.ui.ProgressBar;
@@ -20,11 +22,12 @@ import es.ed0.consoleui.ui.Text;
 import es.ed0.consoleui.ui.TreeView;
 import es.ed0.consoleui.ui.TreeView.TreeViewPopulator;
 import es.ed0.consoleui.ui.EntryTable.TablePopulator;
+import es.ed0.consoleui.ui.Grid;
 
 /**
  * 
  */
-public class ConsoleUiMain {
+public class ConsoleUiMain implements LineListener {
 
 	public static void main(String[] args) {
 		new ConsoleUiMain();
@@ -47,41 +50,44 @@ public class ConsoleUiMain {
 		
 		
 		ui.addCommands("help", "toggle", "yey", "y este");
-		
-		ui.addInputListener(new CommandListener() {
-			@Override
-			public boolean onCommand(String command, String[] args) {
-				ui.println("Entered command " + command);
-				ui.println("With arguments: ");
-				for (String s : args)
-					ui.print(s + ", ");
-				
-				if(command.equals("y-este"))
-					ui.println(ui.promptInput("Como quieres tu meme?"));
-				return true;
-			}
-		});
+
+//		ui.addInputListener(this);
+//		ui.addInputListener(new CommandListener() {
+//			@Override
+//			public boolean onCommand(String command, String[] args) {
+//				ui.println("Entered command " + command);
+//				ui.println("With arguments: ");
+//				for (String s : args)
+//					ui.print(s + ", ");
+//				
+//				if(command.equals("y-este"))
+//					ui.println(ui.promptInput("Como quieres tu meme?"));
+//				return false;
+//			}
+//		});
 		
 		ui.setLineSpacing(3);
 		
-		Panel inside = new Panel("menuda movida tron", new Text("okei tt"));
+		Panel inside = new Panel("Esto es un panel de prubea tt", new Text("okei tt"));
 		
-		Panel panel = new Panel("Esto es un panel de prubea tt", new Text(
+		
+		Panel panel = new Panel("Esto es un panel de prubea tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt", new Text(
 				"erase una vez en un lugar de a saber donde que ocurrio una movida to tocha. "
 				+ "erase una vez en un lugar de a saber donde que ocurrio una movida to tocha.\n "
-				+ "erase una vez en un lugar de a saber donde que ocurrio una movida to tocha."));
-		panel.add(new Separator(50));
-		panel.add("firmado por el ed0");
-		panel.add(new Separator(50));
-		panel.add(inside);
+				+ "erase una vez en un lugar de a saber donde que ocurrio una movida to tocha.", true));
+		//panel.add(new Separator(50));
+		//panel.add("firmado por el ed0\n");
+		//panel.add(new Separator(50));
+		//panel.add(inside);
 		
-		panel.setPadding(0, 3, 0, 3);
-		panel.setMaxWidth(50);
-		panel.setContentAlign(Alignment.right);
+		//panel.setPadding(0, 3, 0, 3);
+		//panel.setTileMaxWidth(50);
+		//panel.setContentAlign(Alignment.right);
 		
-		panel.setTabulation(2);
+		//panel.setTabulation(2);
 		
 		ui.print(panel);
+		ui.print(inside);
 		
 		List<Pojo> pojos = Arrays.asList(new Pojo[] {
 				new Pojo("hi", "wadup", 12), new Pojo("holita", "surnamejesadasdsaddasdddddddddddddddddddddddddddddddddddasaadsasddssadadj", 1900),
@@ -91,23 +97,35 @@ public class ConsoleUiMain {
 		EntryTable<Pojo> table = new EntryTable<Pojo>(BorderStyle.hollow, pojos, "name", "surname", "age");
 		table.setTablePopulator(new TablePopulator<Pojo>() {
 			@Override
-			public ArrayList<String> getViewForRow(int i, Pojo entry) {
-				final ArrayList<String> row = new ArrayList<String>();
-				row.add(entry.name);
-				row.add(entry.surname);
-				row.add(entry.age + "");
+			public ArrayList<Component> getViewForRow(int i, Pojo entry) {
+				final ArrayList<Component> row = new ArrayList<Component>();
+				row.add(new Text(entry.name));
+				row.add(new Text(entry.surname));
+				row.add(new Text(entry.age));
 				return row;
 			}
 		});
-		table.setColAlign(Alignment.center);
+		table.setAlign(Alignment.center);
+		//table.setEnumerate(true);
 		table.setEnumerate(true);
-		table.setEnumerate(false);
 		table.setTabulation(1);
 		
 		Panel tablePanel = new Panel(BorderStyle.unicode, "mira que guapa la tabla", table);
-		tablePanel.setMaxWidth(-1);
+		tablePanel.setHeaderAlign(Alignment.center);
+		//tablePanel.setTileMaxWidth(-1);
+		
+		Text longText = new Text("hola muy buena tardes a todos os queria presentar este texto "
+				+ "muy largo que se va a tener que dividir en partes pq sinoxd");
+		
+		
+		tablePanel.setTileMaxWidth(20);
+		tablePanel.setPadding(0);
 		
 		ui.print(tablePanel);
+		
+		Panel newPanel = new Panel(BorderStyle.unicode, "mira que guapa la tabla", longText);
+		newPanel.setTileMaxWidth(20);
+		ui.print(newPanel);
 		
 		ui.printList(Arrays.asList(new String[] { "entry1", "entry2", "entry678" }));
 		
@@ -123,19 +141,50 @@ public class ConsoleUiMain {
 //			}
 //		});
 //		
-//		ui.print(files);
+//		ui.print(new Panel(BorderStyle.unicode, files));
 		
-		ProgressBar bar = new ProgressBar(20, 20, BorderStyle.sql);
+		Grid grid = new Grid(3, 3);
 		
-		bar.setMax(25);
-		bar.setValue(17);
+		grid.add(new Text("celda 4 loco"), 0, 1);
+		grid.add(new Text("celda 2 loco"), 1, 0);
+		grid.add(new Text("celda 1 loco"), 0, 0);
+		table.setEnumerate(false);
+		grid.add(tablePanel, 2, 1);
+		grid.add(new Text("celda 3 loco"), 2, 0);
+		grid.add(new Text("celda 5 loco\nasdaddadass asadsdas dasd asda sdadds dad sad dadsasd asd aco"), 1, 1);
+		grid.add(new Text("celda 7 loco"), 2, 2);
+		grid.add(new Text("amo a aser esto un poco + grandesito"), 0, 2);
+		
+		grid.setPadding(1);
+
+		grid.setAlign(Alignment.right, 0, 0);
+		grid.setAlign(Alignment.left, 1, 0);
+		grid.setAlign(Alignment.left, 2, 0);
+		grid.setAlign(Alignment.left, 0, 1);
+		grid.setAlign(Alignment.right, 0, 2);
+		grid.setAlign(Alignment.left, 2, 2);
+		
+		ui.print(grid);
 		
 		
-		ui.print(bar);
+		Grid grid2 = new Grid(1, 2);
 		
+		grid2.setTabulation(2);
 		
+		grid2.add(new Text("Esto es como un panel"));
+		grid2.add(new ProgressBar(25, 30));
 		
+		ui.print(grid2);
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see es.ed0.consoleui.input.LineListener#onLine(java.lang.String)
+	 */
+	@Override
+	public boolean onLine(String line) {
+		System.out.println("entered line " + line);
+		return true;
 	}
 
 }

@@ -27,7 +27,7 @@ public enum BorderStyle {
 	 * ║                      ║<br>
 	 * ╚══════════════════════╝
 	 */
-	hollow;
+	hollow, none;
 	
 	public enum BorderPiece {
 		wd, ws, wa, wds, wsa, wda, wdsa,
@@ -50,6 +50,7 @@ public enum BorderStyle {
 		case sql: arr = new String[] { "+", "|", "+", "+", "+", "+", "+", "+", "-", "+", "+", " " }; break;
 		case unicode: arr = new String[] { "└", "│", "┘", "├", "┤", "┴", "┼", "┌", "─", "┬", "┐", " " }; break;
 		case hollow: arr = new String[] { "╚", "║", "╝", "╠", "╣", "╩", "╬", "╔", "═", "╦", "╗", " " }; break;
+		case none: arr = new String[] { "", "", "", "", "", "", "", "", "", "", "", " " }; break;
 		}
 		return arr[piece.toIndex()];
 	}

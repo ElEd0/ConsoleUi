@@ -42,7 +42,7 @@ public class ProgressBar extends Component {
 		
 		sb.append(style.getPiece(BorderPiece.wd));
 		for (int i = 0; i < max + 2; i++) sb.append(style.getPiece(BorderPiece.da));
-		sb.append(style.getPiece(BorderPiece.wa)).append("\n");
+		sb.append(style.getPiece(BorderPiece.wa));
 	}
 	
 	public int getMax() {

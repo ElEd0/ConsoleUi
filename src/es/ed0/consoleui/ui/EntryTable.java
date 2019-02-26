@@ -4,15 +4,13 @@
 package es.ed0.consoleui.ui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import es.ed0.consoleui.ui.BorderStyle.BorderPiece;
 /**
  * Creates a console ui Table in which each row is represented by a object of type <code>T</code>. 
  * @param <T> An object that represents a row entry
  */
-public class EntryTable<T> extends Component {
+public class EntryTable<T> extends Grid {
 
 	/**
 	 * Interface required to inflate the EntryTable with data. 
@@ -27,19 +25,13 @@ public class EntryTable<T> extends Component {
 		 * @param entry row entry
 		 * @return ArrarList containing one string for every column
 		 */
-		public ArrayList<String> getViewForRow(int index, T entry);
+		public ArrayList<Component> getViewForRow(int index, T entry);
 	}
 	
 	private String[] cols;
-	private ArrayList<Integer> colWidths, rowHeights;
-	private Alignment colAlign;
-	private BorderStyle style;
-	
-	private ArrayList<ArrayList<String>> rows;
 	private ArrayList<T> entries;
 	private TablePopulator<T> populator;
 	
-	private int colMargin = 1;
 	private boolean enumerate = false;
 	
 	/**
@@ -62,102 +54,55 @@ public class EntryTable<T> extends Component {
 	 * @param cols table columns
 	 */
 	public EntryTable(BorderStyle style, List<T> entries, String... cols) {
+		super(style, cols.length, entries.size() + 1);
 		this.entries = new ArrayList<T>(entries);
-		this.cols = cols;
-		this.style = style;
-		this.colAlign = Alignment.center;
+		this.setCols(cols);
 	}
 	
 	
 	protected void print(StringBuilder sb) {
 		if (populator == null)
 			return;
+		// ad column header
+		for(int c = 0; c < cols.length; c++)
+			super.add(new Text(cols[c]), c, 0);
 		
-		// get rows from populator
-		rows = new ArrayList<>();
-		rowHeights = new ArrayList<Integer>();
+		// populate table
 		for (int i = 0; i < entries.size(); i++) {
-			List<String> views = populator.getViewForRow(i, entries.get(i));
+			List<Component> views = populator.getViewForRow(i, entries.get(i));
 			if (enumerate)
-				views.add(0, (i + 1) + "");
+				views.add(0, new Text(i + 1));
+			for (int v = 0; v < cols.length; v++)
+				super.add(views.get(v), v, i + 1);
 			
-			// correct size
-			if (views.size() < cols.length)
-				for (int v = 0; v < (cols.length - views.size()); v++)
-					views.add("");
-			else if (views.size() > cols.length)
-				views = views.subList(0, cols.length);
-				
-			rows.add(new ArrayList<>(views));
-			int heighest = 1;
-			for (String data : views) {
-				int lineHeight = (data.length() - data.replaceAll("\n", "").length()) + 1;
-				if (lineHeight > heighest)
-					heighest = lineHeight;
-			}
-			rowHeights.add(heighest);
 		}
+		
+		super.print(sb);
+		
+	}
 
-		// calculate max column widths
-		colWidths = new ArrayList<Integer>(cols.length);
-		for (String s : cols) 
-			colWidths.add(s.length());
-		
-		for (int i = 0; i < colWidths.size(); i++) {
-			for (int r = 0; r < rows.size(); r++) {
-				int valueLength = rows.get(r).get(i).length();
-				if (valueLength > colWidths.get(i)) {
-					colWidths.remove(i);
-					colWidths.add(i, valueLength);
-				}
-			}
-		}
-		
-		sb.append(printLine(BorderPiece.ds, BorderPiece.dsa, BorderPiece.sa));
-		sb.append(printData(Arrays.asList(cols)));
-		for (int i = 0; i < rows.size(); i++) {
-			sb.append(printLine(BorderPiece.wds, BorderPiece.wdsa, BorderPiece.wsa));
-			sb.append(printData(rows.get(i)));
-		}
-		sb.append(printLine(BorderPiece.wd, BorderPiece.wda, BorderPiece.wa));
-		
+	public void remove(int col, int row) {
+		add(new Text(""), col, row);
 	}
 	
-	private String printLine(BorderPiece left, BorderPiece center, BorderPiece right) {
-		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < colWidths.size(); i++) {
-			if (i == 0) sb.append(style.getPiece(left));
-			else  sb.append(style.getPiece(center));
-			for (int m = 0; m < (colWidths.get(i) + (colMargin * 2)); m++)
-				sb.append(style.getPiece(BorderPiece.da));
-		}
-		sb.append(style.getPiece(right)).append("\n");
-		return sb.toString();
+	public void removeCol(int col) {
+		final String[] newCols = new String[cols.length - 1];
+		for (int c = 1; c < cols.length; c++)
+			newCols[c - 1] = cols[c];
+		setCols(newCols);
 	}
 	
-	private String printData(List<String> data) {
-		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < data.size(); i++) {
-			int paddingRight = colMargin, paddingLeft = colMargin;
-			int diff = colWidths.get(i) - data.get(i).length();
-			switch (this.colAlign) {
-			case right: paddingLeft += diff; break;
-			case left: paddingRight += diff; break;
-			case center:
-				int sidePad = diff / 2;
-				paddingRight += sidePad;
-				paddingLeft += sidePad;
-				if (diff % 2 != 0)
-					paddingRight++;
-				break;
-			}
-			sb.append(style.getPiece(BorderPiece.ws));
-			for (int m = 0; m < paddingLeft; m++) sb.append(" ");
-			sb.append(data.get(i));
-			for (int m = 0; m < paddingRight; m++) sb.append(" ");
-		}
-		sb.append(style.getPiece(BorderPiece.ws)).append("\n");
-		return sb.toString();
+	public void removeRow(int row) {
+		if (row < getRowCount())
+			this.entries.remove(row);
+	}
+	
+	public int getColCount() {
+		return cols.length;
+	}
+
+	public int getRowCount() {
+		return this.entries.size();
 	}
 	
 	public void setEnumerate(boolean enumerate) {
@@ -165,20 +110,20 @@ public class EntryTable<T> extends Component {
 			return;
 		this.enumerate = enumerate;
 		if (enumerate) {
-			final String[] newCols = new String[getCols().length + 1];
+			final String[] newCols = new String[cols.length + 1];
 			newCols[0] = "nº";
 			for (int c = 0; c < cols.length; c++)
 				newCols[c + 1] = cols[c];
-			setCols(newCols);			
+			setCols(newCols);
 		} else {
-			final String[] newCols = new String[getCols().length - 1];
+			final String[] newCols = new String[cols.length - 1];
 			for (int c = 1; c < cols.length; c++)
 				newCols[c - 1] = cols[c];
 			setCols(newCols);
+			super.removeCol(cols.length);
 		}
 	}
 	
-	public void setColAlign(Alignment align) { this.colAlign = align; }
 
 	public String[] getCols() { return cols; }
 
@@ -192,9 +137,5 @@ public class EntryTable<T> extends Component {
 
 	public void setTablePopulator(TablePopulator<T> populator) { this.populator = populator; }
 
-	public int getColMargin() { return colMargin; }
-
-	public void setColMargin(int colMargin) { this.colMargin = colMargin; }
-	
 	
 }
