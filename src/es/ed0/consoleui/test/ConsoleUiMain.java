@@ -11,8 +11,6 @@ import java.util.List;
 import es.ed0.consoleui.ConsoleUi;
 import es.ed0.consoleui.input.CommandListener;
 import es.ed0.consoleui.input.LineListener;
-import es.ed0.consoleui.ui.Alignment;
-import es.ed0.consoleui.ui.BorderStyle;
 import es.ed0.consoleui.ui.Component;
 import es.ed0.consoleui.ui.EntryTable;
 import es.ed0.consoleui.ui.Panel;
@@ -21,6 +19,8 @@ import es.ed0.consoleui.ui.Separator;
 import es.ed0.consoleui.ui.Text;
 import es.ed0.consoleui.ui.TreeView;
 import es.ed0.consoleui.ui.TreeView.TreeViewPopulator;
+import es.ed0.consoleui.ui.style.Alignment;
+import es.ed0.consoleui.ui.style.BorderStyle;
 import es.ed0.consoleui.ui.EntryTable.TablePopulator;
 import es.ed0.consoleui.ui.Grid;
 

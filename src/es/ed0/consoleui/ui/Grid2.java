@@ -12,10 +12,24 @@ import es.ed0.consoleui.ui.style.BorderStyle;
 import es.ed0.consoleui.ui.style.BorderStyle.BorderPiece;
 
 /**
- * 
+ * WIP: Grid implementation with more versatile functionality, colspan and rowspan could be available
  */
-public class Grid extends Component {
+public class Grid2 extends Component {
 
+	public class Cell {
+		String id;
+		Alignment align;
+		int width, height;
+		
+		public Cell(String id) {
+			this.id = id;
+		}
+		
+		public Cell(int col, int row) {
+			
+		}
+	}
+	
 	private ArrayList<ArrayList<Component>> rows;
 	private ArrayList<Integer> colWidths, rowHeights;
 	private int tileMinWidth = 0; // borders do not take in account
@@ -26,13 +40,13 @@ public class Grid extends Component {
 	
 	private HashMap<String, Alignment> alignOverrides;
 	
-	public Grid() {
+	public Grid2() {
 		this(BorderStyle.unicode, 1, 1);
 	}
-	public Grid(int cols, int rows) {
+	public Grid2(int cols, int rows) {
 		this(BorderStyle.unicode, cols, rows);
 	}
-	public Grid(BorderStyle style, int cols, int rows) {
+	public Grid2(BorderStyle style, int cols, int rows) {
 		this.style = style;
 		this.padding = new int[] {0, 1, 0, 1};
 		this.align = Alignment.center;

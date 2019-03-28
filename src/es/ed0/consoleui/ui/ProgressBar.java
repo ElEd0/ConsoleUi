@@ -3,7 +3,8 @@
  */
 package es.ed0.consoleui.ui;
 
-import es.ed0.consoleui.ui.BorderStyle.BorderPiece;
+import es.ed0.consoleui.ui.style.BorderStyle;
+import es.ed0.consoleui.ui.style.BorderStyle.BorderPiece;
 
 /**
  * 

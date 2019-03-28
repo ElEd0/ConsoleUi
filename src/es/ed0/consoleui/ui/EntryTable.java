@@ -6,6 +6,8 @@ package es.ed0.consoleui.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.ed0.consoleui.ui.style.BorderStyle;
+
 /**
  * Creates a console ui Table in which each row is represented by a object of type <code>T</code>. 
  * @param <T> An object that represents a row entry

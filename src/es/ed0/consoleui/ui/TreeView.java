@@ -6,7 +6,8 @@ package es.ed0.consoleui.ui;
 import java.io.File;
 import java.util.ArrayList;
 
-import es.ed0.consoleui.ui.BorderStyle.BorderPiece;
+import es.ed0.consoleui.ui.style.BorderStyle;
+import es.ed0.consoleui.ui.style.BorderStyle.BorderPiece;
 
 /**
  * Console ui element that prints a Tree view showing a recursive hierarchy

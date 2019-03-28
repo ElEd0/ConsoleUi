@@ -3,6 +3,8 @@
  */
 package es.ed0.consoleui.ui;
 
+import es.ed0.consoleui.ui.style.Alignment;
+import es.ed0.consoleui.ui.style.BorderStyle;
 
 /**
  * Console ui element that prints a panel and an optional header
