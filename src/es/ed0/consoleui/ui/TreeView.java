@@ -6,6 +6,7 @@ package es.ed0.consoleui.ui;
 import java.io.File;
 import java.util.ArrayList;
 
+import es.ed0.consoleui.ui.style.Alignment;
 import es.ed0.consoleui.ui.style.BorderStyle;
 import es.ed0.consoleui.ui.style.BorderStyle.BorderPiece;
 
@@ -43,6 +44,7 @@ public class TreeView<T> extends Component {
 	private BorderPiece[] marks;
 	
 	private boolean opened = true;
+	private boolean loaded = false;
 	private BorderStyle style;
 	
 	public TreeView(T root, TreeViewPopulator<T> populator) {
@@ -54,39 +56,38 @@ public class TreeView<T> extends Component {
 	}
 	
 	private TreeView(BorderStyle style, T root, TreeViewPopulator<T> populator, BorderPiece[] marks) {
+		super(Alignment.left, new int[] {0, 0, 0, 1});
 		this.populator = populator;
 		this.marks = marks;
 		this.style = style;
 		this.sons = new ArrayList<TreeView<T>>();
-		setRoot(root);		
+		setRoot(root);
 	}
 	
 	@Override
 	protected void print(StringBuilder sb) {
+		if (!this.loaded) {
+			this.loadTree();
+		}
 		for (BorderPiece m : marks)
-			sb.append(style.getPiece(m)).append(" ");
+			sb.append(style.getPiece(m));
 		
 		for (int p = 0; p < this.padding[3]; p++)
-			sb.append(" ");
+			sb.append(this.getPaddingChar());
 		sb.append(populator.getName(root));
 		for (int p = 0; p < this.padding[1]; p++)
-			sb.append(" ");
+			sb.append(this.getPaddingChar());
 		sb.append("\n");
 		
 		if (isOpened())
 			for (TreeView<T> son : sons)
 				son.print(sb);
 	}
-
-	public T getRoot() {
-		return root;
-	}
-
-	public void setRoot(T root) {
-		this.root = root;
+	
+	public void loadTree() {
 		sons.clear();
 		final T[] newSons = populator.getChildren(root);
-		if (newSons != null)
+		if (newSons != null) {
 			for (int i = 0; i < newSons.length; i++) {
 				BorderPiece[] newMarks = new BorderPiece[marks.length + 1];
 				for (int m = 0; m < marks.length; m++) {
@@ -96,8 +97,23 @@ public class TreeView<T> extends Component {
 					}
 				}
 				newMarks[newMarks.length - 1] = (i == newSons.length - 1 ? BorderPiece.wd : BorderPiece.wds);
-				sons.add(new TreeView<T>(style, newSons[i], populator, newMarks));
+				final TreeView<T> sonTreeview = new TreeView<T>(style, newSons[i], populator, newMarks);
+				sonTreeview.setAlign(this.align);
+				sonTreeview.setPadding(this.padding);
+				sonTreeview.setPaddingChar(this.paddingChar);
+				sons.add(sonTreeview);
 			}
+		}
+		this.loaded = true;
+	}
+
+	public T getRoot() {
+		return root;
+	}
+
+	public void setRoot(T root) {
+		this.root = root;
+		this.loaded = false;
 	}
 
 	public ArrayList<TreeView<T>> getSons() {
@@ -110,6 +126,10 @@ public class TreeView<T> extends Component {
 
 	public void setOpened(boolean opened) {
 		this.opened = opened;
+	}
+
+	public boolean isLoaded() {
+		return loaded;
 	}
 	
 	

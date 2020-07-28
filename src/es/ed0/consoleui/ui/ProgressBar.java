@@ -26,11 +26,10 @@ public class ProgressBar extends Component {
 		this(max, value, BorderStyle.sql);
 	}
 	public ProgressBar(int max, int value, BorderStyle style) {
+		super(Alignment.left, new int[] {0, 1, 0, 1});
 		this.max = max;
 		setValue(value);
 		this.style = style;
-		this.padding = new int[] {0, 1, 0, 1};
-		align = Alignment.left;
 	}
 
 
@@ -99,6 +98,15 @@ public class ProgressBar extends Component {
 	public void setValue(int value) {
 		this.value = value > max ? max : value;
 	}
+	
+	/**
+	 * Get the current progress percent
+	 * @return
+	 */
+	public double getProgress() {
+		return (value * 100) / max;
+	}
+	
 	public String getProgressChar() {
 		return progressChar;
 	}

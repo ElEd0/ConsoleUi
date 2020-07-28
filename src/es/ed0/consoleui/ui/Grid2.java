@@ -47,9 +47,8 @@ public class Grid2 extends Component {
 		this(BorderStyle.unicode, cols, rows);
 	}
 	public Grid2(BorderStyle style, int cols, int rows) {
+		super(Alignment.center, new int[] {0, 1, 0, 1});
 		this.style = style;
-		this.padding = new int[] {0, 1, 0, 1};
-		this.align = Alignment.center;
 		this.alignOverrides = new HashMap<String, Alignment>();
 		this.rows = new ArrayList<ArrayList<Component>>(rows);
 		for (int r = 0; r < rows; r++) {

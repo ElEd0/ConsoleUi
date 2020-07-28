@@ -29,14 +29,17 @@ public class ConsoleUi {
 	 * - y/n prompt +
 	 * - line +
 	 * - list + 
-	 * - banners*
-	 * - hierarchy view +
+	 * - hierarchy view (tree view) +
 	 * - line margin +
 	 * - set output stream +
 	 * - panel (padding, etc) +
 	 * - grid - wip
 	 * - fix grid omg, remove getWidth -> cannot call toString twice
-	 * - canvas drawAt(x, y)
+	 * - canvas drawAt(x, y) +
+	 * - canvas draw circle
+	 * - canvas line
+	 * - better borders, with title
+	 * - graphs
 	 */
 	
 	private Scanner t;
@@ -81,7 +84,7 @@ public class ConsoleUi {
 		}
 	}
 	/**
-	 * It will activate the user input and send the next entered line to the available
+	 * It will activate the user input and send the next entered line or command to the available listeners
 	 * @param message
 	 */
 	public void promptInput(String message) {

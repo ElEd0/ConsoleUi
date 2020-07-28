@@ -3,6 +3,7 @@
  */
 package es.ed0.consoleui.ui;
 
+import es.ed0.consoleui.ui.style.Alignment;
 import es.ed0.consoleui.ui.style.BorderStyle;
 import es.ed0.consoleui.ui.style.BorderStyle.BorderPiece;
 
@@ -30,6 +31,7 @@ public class Separator extends Component {
 	 * @param style
 	 */
 	public Separator(int width, String style) {
+		super(Alignment.left, new int[] {0, 0, 0, 0});
 		this.width = width;
 		this.style = style;
 	}

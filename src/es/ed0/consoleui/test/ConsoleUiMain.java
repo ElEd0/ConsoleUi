@@ -11,6 +11,7 @@ import java.util.List;
 import es.ed0.consoleui.ConsoleUi;
 import es.ed0.consoleui.input.CommandListener;
 import es.ed0.consoleui.input.LineListener;
+import es.ed0.consoleui.ui.Canvas;
 import es.ed0.consoleui.ui.Component;
 import es.ed0.consoleui.ui.EntryTable;
 import es.ed0.consoleui.ui.Panel;
@@ -21,6 +22,7 @@ import es.ed0.consoleui.ui.TreeView;
 import es.ed0.consoleui.ui.TreeView.TreeViewPopulator;
 import es.ed0.consoleui.ui.style.Alignment;
 import es.ed0.consoleui.ui.style.BorderStyle;
+import es.ed0.consoleui.ui.style.BorderStyle.BorderPiece;
 import es.ed0.consoleui.ui.EntryTable.TablePopulator;
 import es.ed0.consoleui.ui.Grid;
 
@@ -49,11 +51,26 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 		ui = new ConsoleUi();
 		
 		
-		TreeView<File> tv = new TreeView<File>(BorderStyle.hollow, new File("D:\\Series y pelics\\The crown"), new TreeViewPopulator<File>() {
+		Canvas can = new Canvas(BorderStyle.none, 20, 15);
+		
+		can.setPadding(0);
+		can.fill('*');
+		can.drawRectangle(2, 2, 10, 10, '0', false);
+		ui.print(can);
+		
+		can.fill('*');
+		can.drawRectangle(2, 2, 10, 10, '0', true);
+		ui.print(can);
+		
+
+		if (true)return;
+		
+		
+		
+		TreeView<File> tv = new TreeView<File>(BorderStyle.hollow, new File("C:\\Users\\us3r\\Apache24"), new TreeViewPopulator<File>() {
 
 			@Override
 			public String getName(File item) {
-				System.out.println(item.getName());
 				return item.getName();
 			}
 
@@ -67,10 +84,12 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 			}
 			
 		});
+		//tv.setPaddingChar(BorderStyle.hollow.getPiece(BorderPiece.da) + " ");
+		tv.setPadding(0, 0, 0, 1);
+		tv.setLeftMargin(6);
 		
 		ui.print(tv);
 
-		if (true)return;
 		
 		
 		ProgressBar pb = new ProgressBar(20, 2, BorderStyle.sql);
@@ -116,7 +135,6 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 		panel.setContentAlign(Alignment.right);
 		panel.setHeaderAlign(Alignment.right);
 		
-		panel.setTabulation(2);
 		
 		//ui.print(panel);
 		//ui.print(inside);
@@ -147,7 +165,6 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 		table.removeRow(2);
 		//ui.println(table.getRowCount());
 		table.setEnumerate(true);
-		table.setTabulation(1);
 		
 		Panel tablePanel = new Panel(BorderStyle.unicode, "mira que guapa la tabla", table);
 		tablePanel.setHeaderAlign(Alignment.center);
@@ -210,7 +227,6 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 		
 		Grid grid2 = new Grid(1, 2);
 		
-		grid2.setTabulation(2);
 		
 		grid2.add(new Text("Esto es como un panel"));
 		grid2.add(new ProgressBar(25, 30));

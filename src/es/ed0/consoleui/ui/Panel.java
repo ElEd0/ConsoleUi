@@ -50,7 +50,7 @@ public class Panel extends Grid {
 			this.setHeaderAlign(Alignment.center);
 		}
 		this.content = component;
-		this.content.setTabulation(0);
+		this.content.setLeftMargin(0);
 		super.add(content);
 		this.setContentAlign(Alignment.left);
 	}

@@ -14,31 +14,44 @@ public abstract class Component {
 	public String toString() {
 		final StringBuilder content = new StringBuilder();
 		print(content);
-		if (tabulation != 0) {
-			final StringBuilder tab = new StringBuilder();
-			for (int t = 0; t < tabulation; t++) tab.append("\t");
+		if (leftMargin != 0) {
+			final StringBuilder tabB = new StringBuilder();
+			for (int t = 0; t < leftMargin; t++) tabB.append(" ");
+			final String tab = tabB.toString();
 			final String aux = content.toString();
 			content.setLength(0);
-			content.append(tab.toString());
-			content.append(aux.replaceAll("\n", "\n" + tab.toString()));
+			content.append(tab);
+			content.append(aux.replaceAll("\n", "\n" + tab));
 		}
 		if (isNewLine())
 			content.append("\n");
 		return content.toString();
 	}
 	
-	private int tabulation = 0;
 	private boolean newLine = true;
+	private int leftMargin = 0;
 	protected int[] padding;
+	protected String paddingChar = " ";
 	protected Alignment align;
 	
+	
+	public Component(Alignment align, int[] padding) {
+		this.align = align;
+		this.padding = padding;
+	}
+	
+	public int getLeftMargin() {
+		return leftMargin;
+	}
+
 	/**
-	 * Sets the tabulation for this component, this is, how many \t will be printed before the component
+	 * Sets the left spacing for this component, this is, how many space characters will be printed before the component
 	 * @param tabs
 	 */
-	public void setTabulation(int tabs) {
-		this.tabulation = tabs;
+	public void setLeftMargin(int leftMargin) {
+		this.leftMargin = leftMargin;
 	}
+
 	/**
 	 * True if this component will append a line jump at its end
 	 * @return
@@ -66,10 +79,15 @@ public abstract class Component {
 	 * @param left
 	 */
 	public void setPadding(int top, int right, int bottom, int left) {
-		padding[0] = top;
-		padding[1] = right;
-		padding[2] = bottom;
-		padding[3] = left;
+		this.setPadding(new int[] {top, right, bottom, left});
+	}
+	/**
+	 * Set padding independently for all 4 sides (top, right, bottom and left)
+	 * @param pad
+	 */
+	public void setPadding(int[] pad) {
+		if (pad.length >= 4)
+			this.padding = pad;
 	}
 	/**
 	 * Set padding from top
@@ -106,12 +124,30 @@ public abstract class Component {
 	public int[] getPadding() {
 		return this.padding;
 	}
-
+	
+	/**
+	 * Returns current character used as padding
+	 * @return String containing character
+	 */
+	public String getPaddingChar() {
+		return paddingChar;
+	}
+	/**
+	 * Sets the character used as padding
+	 * @param paddingChar
+	 */
+	public void setPaddingChar(String paddingChar) {
+		this.paddingChar = paddingChar;
+	}
+	/**
+	 * Returns the current alignment
+	 * @return
+	 */
 	public Alignment getAlign() {
 		return align;
 	}
 	/**
-	 * Sets the alignment of the bar inside the frame
+	 * Sets the alignment of the content inside its frame
 	 * @param align
 	 */
 	public void setAlign(Alignment align) {
@@ -119,6 +155,7 @@ public abstract class Component {
 	}
 	
 	public int getWidth() {
+		// TODO: remove
 		final String toStr = toString();
 		final int index = toStr.indexOf('\n');
 		return index == -1 ? toStr.length() : index;

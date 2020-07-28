@@ -3,6 +3,8 @@
  */
 package es.ed0.consoleui.ui;
 
+import es.ed0.consoleui.ui.style.Alignment;
+
 /**
  * Console ui that prints simple text. The only use of this object is to wrap the string class and 
  * have a common console component
@@ -29,13 +31,22 @@ public class Text extends Component {
 	 * @param newLine append a line break at the end (\n). This can be changed in {@link Component#setNewLine(boolean)}
 	 */
 	public Text(String text, boolean newLine) {
+		super(Alignment.left, new int[] {0, 0, 0, 0});
 		this.text = text == null ? "null" : text;
 		setNewLine(newLine);
 	}
 	
 	@Override
 	protected void print(StringBuilder sb) {
+		for (int p = 0; p < this.padding[0]; p++)
+			sb.append("\n");
+		for (int p = 0; p < this.padding[3]; p++)
+			sb.append(this.getPaddingChar());
 		sb.append(text);
+		for (int p = 0; p < this.padding[1]; p++)
+			sb.append(this.getPaddingChar());
+		for (int p = 0; p < this.padding[2]; p++)
+			sb.append("\n");
 	}
 	public String getText() {
 		return text;
