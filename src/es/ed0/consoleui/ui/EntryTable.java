@@ -23,9 +23,9 @@ public class EntryTable<T> extends Grid {
 		/**
 		 * Retrieve the data to insert into the table for the given entry 
 		 * <code>entry</code> with index <code>index</code>
-		 * @param index entry index inside the entry list
+		 * @param index entry index in the list
 		 * @param entry row entry
-		 * @return ArrarList containing one string for every column
+		 * @return ArrayList containing one string for every column
 		 */
 		public ArrayList<Component> getViewForRow(int index, T entry);
 	}
@@ -80,7 +80,6 @@ public class EntryTable<T> extends Grid {
 		}
 		
 		super.print(sb);
-		
 	}
 
 	public void remove(int col, int row) {

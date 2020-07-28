@@ -3,6 +3,8 @@
  */
 package es.ed0.consoleui.ui;
 
+import es.ed0.consoleui.ui.style.Alignment;
+
 /**
  * Abstract class that all console ui elements must extend. 
  * Handles basic shared functionality like tabulation
@@ -26,7 +28,9 @@ public abstract class Component {
 	}
 	
 	private int tabulation = 0;
-	private boolean newLine = true; 
+	private boolean newLine = true;
+	protected int[] padding;
+	protected Alignment align;
 	
 	/**
 	 * Sets the tabulation for this component, this is, how many \t will be printed before the component
@@ -51,6 +55,69 @@ public abstract class Component {
 		this.newLine = newLine;
 	}
 
+	public void setPadding(int padding) {
+		this.setPadding(padding, padding, padding, padding);
+	}
+	/**
+	 * Set padding independently for all 4 sides (top, right, bottom and left)
+	 * @param top
+	 * @param right
+	 * @param bottom
+	 * @param left
+	 */
+	public void setPadding(int top, int right, int bottom, int left) {
+		padding[0] = top;
+		padding[1] = right;
+		padding[2] = bottom;
+		padding[3] = left;
+	}
+	/**
+	 * Set padding from top
+	 * @param padding
+	 */
+	public void setPaddingTop(int padding) {
+		this.padding[0] = padding;
+	}
+	/**
+	 * Set padding from right
+	 * @param padding
+	 */
+	public void setPaddingRight(int padding) {
+		this.padding[1] = padding;
+	}
+	/**
+	 * Set padding from bottom
+	 * @param padding
+	 */
+	public void setPaddingBottom(int padding) {
+		this.padding[2] = padding;
+	}
+	/**
+	 * Set padding from left
+	 * @param padding
+	 */
+	public void setPaddingLeft(int padding) {
+		this.padding[3] = padding;
+	}
+	/**
+	 * Gets the current padding, in order: top, right, bottom, left
+	 * @return
+	 */
+	public int[] getPadding() {
+		return this.padding;
+	}
+
+	public Alignment getAlign() {
+		return align;
+	}
+	/**
+	 * Sets the alignment of the bar inside the frame
+	 * @param align
+	 */
+	public void setAlign(Alignment align) {
+		this.align = align;
+	}
+	
 	public int getWidth() {
 		final String toStr = toString();
 		final int index = toStr.indexOf('\n');

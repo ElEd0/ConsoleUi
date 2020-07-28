@@ -35,6 +35,8 @@ public class ConsoleUi {
 	 * - set output stream +
 	 * - panel (padding, etc) +
 	 * - grid - wip
+	 * - fix grid omg, remove getWidth -> cannot call toString twice
+	 * - canvas drawAt(x, y)
 	 */
 	
 	private Scanner t;
@@ -145,13 +147,27 @@ public class ConsoleUi {
 			for (int i = 0; i < lineSpacing - 1; i++)
 				out.println();
 	}
-	
+
+	/**
+	 * Prints the given object to the console
+	 * @param line
+	 */
+	public void print(Object obj) {
+		this.print(obj.toString());
+	}
 	/**
 	 * Prints the given text to the console and appends a line jump
 	 * @param line
 	 */
 	public void println(String line) {
 		print(line + "\n");
+	}
+	/**
+	 * Prints the given object to the console and appends a line jump
+	 * @param line
+	 */
+	public void println(Object obj) {
+		println(obj.toString());
 	}
 	
 	/**

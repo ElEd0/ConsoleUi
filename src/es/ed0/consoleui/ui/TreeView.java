@@ -66,7 +66,13 @@ public class TreeView<T> extends Component {
 		for (BorderPiece m : marks)
 			sb.append(style.getPiece(m)).append(" ");
 		
-		sb.append(populator.getName(root)).append("\n");
+		for (int p = 0; p < this.padding[3]; p++)
+			sb.append(" ");
+		sb.append(populator.getName(root));
+		for (int p = 0; p < this.padding[1]; p++)
+			sb.append(" ");
+		sb.append("\n");
+		
 		if (isOpened())
 			for (TreeView<T> son : sons)
 				son.print(sb);

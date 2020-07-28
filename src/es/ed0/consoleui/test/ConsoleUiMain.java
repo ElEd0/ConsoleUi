@@ -27,7 +27,7 @@ import es.ed0.consoleui.ui.Grid;
 /**
  * 
  */
-public class ConsoleUiMain implements LineListener {
+public class ConsoleUiMain implements LineListener, CommandListener {
 
 	public static void main(String[] args) {
 		new ConsoleUiMain();
@@ -49,6 +49,37 @@ public class ConsoleUiMain implements LineListener {
 		ui = new ConsoleUi();
 		
 		
+		TreeView<File> tv = new TreeView<File>(BorderStyle.hollow, new File("D:\\Series y pelics\\The crown"), new TreeViewPopulator<File>() {
+
+			@Override
+			public String getName(File item) {
+				System.out.println(item.getName());
+				return item.getName();
+			}
+
+			@Override
+			public File[] getChildren(File item) {
+				if (item.isDirectory()) {
+					return item.listFiles();
+				} else {
+					return new File[] {};
+				}
+			}
+			
+		});
+		
+		ui.print(tv);
+
+		if (true)return;
+		
+		
+		ProgressBar pb = new ProgressBar(20, 2, BorderStyle.sql);
+		pb.setValue(11);
+		//pb.setPadding(1, 0,0, 0);
+		pb.setAlign(Alignment.left);
+		pb.setProgressHeight(1);
+		ui.print(pb);
+
 		ui.addCommands("help", "toggle", "yey", "y este");
 
 //		ui.addInputListener(this);
@@ -80,24 +111,28 @@ public class ConsoleUiMain implements LineListener {
 		//panel.add(new Separator(50));
 		//panel.add(inside);
 		
-		//panel.setPadding(0, 3, 0, 3);
+		//panel.setPadding(1, 3, 1, 3);
 		//panel.setTileMaxWidth(50);
-		//panel.setContentAlign(Alignment.right);
+		panel.setContentAlign(Alignment.right);
+		panel.setHeaderAlign(Alignment.right);
 		
-		//panel.setTabulation(2);
+		panel.setTabulation(2);
 		
-		ui.print(panel);
-		ui.print(inside);
+		//ui.print(panel);
+		//ui.print(inside);
+		
+		//if (true) return;
 		
 		List<Pojo> pojos = Arrays.asList(new Pojo[] {
 				new Pojo("hi", "wadup", 12), new Pojo("holita", "surnamejesadasdsaddasdddddddddddddddddddddddddddddddddddasaadsasddssadadj", 1900),
-				new Pojo("sandi", "gominola", 24), new Pojo("juanelea", "blepblep", 10),
+				new Pojo("lluco", "putoamo", 24), new Pojo("juanelea", "blepblep", 10),
 		});
 		
 		EntryTable<Pojo> table = new EntryTable<Pojo>(BorderStyle.hollow, pojos, "name", "surname", "age");
 		table.setTablePopulator(new TablePopulator<Pojo>() {
 			@Override
 			public ArrayList<Component> getViewForRow(int i, Pojo entry) {
+				//System.out.println(i);
 				final ArrayList<Component> row = new ArrayList<Component>();
 				row.add(new Text(entry.name));
 				row.add(new Text(entry.surname));
@@ -107,6 +142,10 @@ public class ConsoleUiMain implements LineListener {
 		});
 		table.setAlign(Alignment.center);
 		//table.setEnumerate(true);
+		table.removeCol(1);
+		//ui.println(table.getRowCount());
+		table.removeRow(2);
+		//ui.println(table.getRowCount());
 		table.setEnumerate(true);
 		table.setTabulation(1);
 		
@@ -122,6 +161,8 @@ public class ConsoleUiMain implements LineListener {
 		tablePanel.setPadding(0);
 		
 		ui.print(tablePanel);
+		
+		if (true)return;
 		
 		Panel newPanel = new Panel(BorderStyle.unicode, "mira que guapa la tabla", longText);
 		newPanel.setTileMaxWidth(20);
@@ -184,6 +225,15 @@ public class ConsoleUiMain implements LineListener {
 	@Override
 	public boolean onLine(String line) {
 		System.out.println("entered line " + line);
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see es.ed0.consoleui.input.CommandListener#onCommand(java.lang.String, java.lang.String[])
+	 */
+	@Override
+	public boolean onCommand(String command, String[] args) {
+		System.out.println("entered command " + command + " with " + args.length + " args");
 		return true;
 	}
 

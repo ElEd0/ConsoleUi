@@ -20,8 +20,6 @@ public class Grid extends Component {
 	private ArrayList<Integer> colWidths, rowHeights;
 	private int tileMinWidth = 0; // borders do not take in account
 	private int tileMaxWidth = 50; // borders do not take in account
-	private int[] padding;
-	private Alignment align; // TODO row align
 	private BorderStyle style;
 	
 	private HashMap<String, Alignment> alignOverrides;
@@ -256,56 +254,6 @@ public class Grid extends Component {
 		this.align = Alignment.center;
 	}
 	
-	/**
-	 * Set padding for all 4 sides (top, right, bottom and left)
-	 * @param padding
-	 */
-	public void setPadding(int padding) {
-		setPadding(padding, padding, padding, padding);
-	}
-
-	/**
-	 * Set padding independently for all 4 sides (top, right, bottom and left)
-	 * @param top
-	 * @param right
-	 * @param bottom
-	 * @param left
-	 */
-	public void setPadding(int top, int right, int bottom, int left) {
-		padding[0] = top;
-		padding[1] = right;
-		padding[2] = bottom;
-		padding[3] = left;
-	}
-	/**
-	 * Set padding from top
-	 * @param padding
-	 */
-	public void setPaddingTop(int padding) {
-		this.padding[0] = padding;
-	}
-	/**
-	 * Set padding from right
-	 * @param padding
-	 */
-	public void setPaddingRight(int padding) {
-		this.padding[1] = padding;
-	}
-	/**
-	 * Set padding from bottom
-	 * @param padding
-	 */
-	public void setPaddingBottom(int padding) {
-		this.padding[2] = padding;
-	}
-	/**
-	 * Set padding from left
-	 * @param padding
-	 */
-	public void setPaddingLeft(int padding) {
-		this.padding[3] = padding;
-	}
-	
 	public int getTileMinWidth() {
 		return tileMinWidth;
 	}
@@ -323,12 +271,6 @@ public class Grid extends Component {
 	}
 	public void setBorderStyle(BorderStyle style) {
 		this.style = style;
-	}
-	public Alignment getAlign() {
-		return align;
-	}
-	public void setAlign(Alignment align) {
-		this.align = align;
 	}
 
 }
