@@ -16,13 +16,12 @@ import es.ed0.consoleui.ui.Component;
 import es.ed0.consoleui.ui.EntryTable;
 import es.ed0.consoleui.ui.Panel;
 import es.ed0.consoleui.ui.ProgressBar;
-import es.ed0.consoleui.ui.Separator;
 import es.ed0.consoleui.ui.Text;
 import es.ed0.consoleui.ui.TreeView;
 import es.ed0.consoleui.ui.TreeView.TreeViewPopulator;
 import es.ed0.consoleui.ui.style.Alignment;
+import es.ed0.consoleui.ui.style.Border;
 import es.ed0.consoleui.ui.style.BorderStyle;
-import es.ed0.consoleui.ui.style.BorderStyle.BorderPiece;
 import es.ed0.consoleui.ui.EntryTable.TablePopulator;
 import es.ed0.consoleui.ui.Grid;
 
@@ -50,18 +49,45 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 	private ConsoleUiMain() {
 		ui = new ConsoleUi();
 		
+		Text t = new Text("hola texto de prueba lolaasd asd sd asd  asd  sdsdsd  sd sd  ");
+		t.setPadding(1, 3, 1, 3);
+		t.setBorder(new Border(BorderStyle.unicode, "| border tt |", 0.05, 0));
 		
-		Canvas can = new Canvas(BorderStyle.none, 20, 15);
+		ui.print(t);
+		
+		//if (true) return;
+		
+		Canvas can = new Canvas(50, 50);
+		can.setBorder(new Border(BorderStyle.unicode));
+		
 		
 		can.setPadding(0);
 		can.fill('*');
-		can.drawRectangle(2, 2, 10, 10, '0', false);
-		ui.print(can);
+		for (int i = 0; i < can.getWidth(); i++) {
+			can.draw(i, 0, (i + "").charAt(0));
+		}
+		for (int i = 0; i < can.getHeight(); i++) {
+			can.draw(0, i, (i + "").charAt(0));
+		}
+		//can.drawRectangle(2, 2, 10, 10, '0', false);
+		//ui.print(can);
 		
-		can.fill('*');
-		can.drawRectangle(2, 2, 10, 10, '0', true);
-		ui.print(can);
+		//can.fill('*');
+		//can.drawRectangle(2, 2, 10, 10, '0', true);
+		//ui.print(can);
+		/*
+		can.drawLine(2, 2, 16, 2, '0');
+		can.drawLine(16, 2, 16, 16, '0');
+		can.drawLine(16, 16, 2, 16, '0');
+		can.drawLine(2, 16, 2, 2, '0');
+		can.drawLine(2, 2, 16, 16, 'O');
+		can.drawLine(16, 2, 2, 16, 'O');
+		*/
 		
+		can.drawCircle(25, 25, 8, 'O', true);
+		
+		
+		ui.print(can);
 
 		if (true)return;
 		

@@ -4,6 +4,8 @@
 package es.ed0.consoleui.ui;
 
 import es.ed0.consoleui.ui.style.Alignment;
+import es.ed0.consoleui.ui.style.Border;
+import es.ed0.consoleui.ui.style.BorderStyle;
 
 /**
  * Abstract class that all console ui elements must extend. 
@@ -31,13 +33,15 @@ public abstract class Component {
 	private boolean newLine = true;
 	private int leftMargin = 0;
 	protected int[] padding;
-	protected String paddingChar = " ";
+	protected char paddingChar = ' ';
 	protected Alignment align;
+	protected Border border;
 	
 	
 	public Component(Alignment align, int[] padding) {
 		this.align = align;
 		this.padding = padding;
+		this.border = new Border(BorderStyle.none);
 	}
 	
 	public int getLeftMargin() {
@@ -129,14 +133,14 @@ public abstract class Component {
 	 * Returns current character used as padding
 	 * @return String containing character
 	 */
-	public String getPaddingChar() {
+	public char getPaddingChar() {
 		return paddingChar;
 	}
 	/**
 	 * Sets the character used as padding
 	 * @param paddingChar
 	 */
-	public void setPaddingChar(String paddingChar) {
+	public void setPaddingChar(char paddingChar) {
 		this.paddingChar = paddingChar;
 	}
 	/**
@@ -154,6 +158,14 @@ public abstract class Component {
 		this.align = align;
 	}
 	
+	public Border getBorder() {
+		return border;
+	}
+
+	public void setBorder(Border border) {
+		this.border = border;
+	}
+
 	public int getWidth() {
 		// TODO: remove
 		final String toStr = toString();

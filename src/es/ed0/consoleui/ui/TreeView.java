@@ -69,6 +69,7 @@ public class TreeView<T> extends Component {
 		if (!this.loaded) {
 			this.loadTree();
 		}
+		// TODO draw border
 		for (BorderPiece m : marks)
 			sb.append(style.getPiece(m));
 		
