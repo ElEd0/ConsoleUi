@@ -36,10 +36,10 @@ public class ConsoleUi {
 	 * - grid - wip
 	 * - fix grid omg, remove getWidth -> cannot call toString twice
 	 * - canvas drawAt(x, y) +
-	 * - canvas draw circle
-	 * - canvas line
+	 * - canvas draw circle +
+	 * - canvas line +
 	 * - better borders, with title
-	 * - graphs
+	 * - graphs (?)
 	 */
 	
 	private Scanner t;

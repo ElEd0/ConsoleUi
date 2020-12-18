@@ -118,7 +118,7 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 
 		
 		
-		ProgressBar pb = new ProgressBar(20, 2, BorderStyle.sql);
+		ProgressBar pb = new ProgressBar(20, 2);
 		pb.setValue(11);
 		//pb.setPadding(1, 0,0, 0);
 		pb.setAlign(Alignment.left);

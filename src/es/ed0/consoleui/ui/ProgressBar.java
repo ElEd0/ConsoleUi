@@ -4,16 +4,16 @@
 package es.ed0.consoleui.ui;
 
 import es.ed0.consoleui.ui.style.Alignment;
-import es.ed0.consoleui.ui.style.BorderStyle;
+import es.ed0.consoleui.ui.style.Border;
 import es.ed0.consoleui.ui.style.BorderStyle.BorderPiece;
 
 /**
- * 
+ * Component that displays progress based on a max and current value. 
+ * The progress is shown by the amount of {@link ProgressBar.progressChar} and {@link ProgressBar.unprogressChar}
  */
 public class ProgressBar extends Component {
 	
 	
-	private BorderStyle style;
 	private int max;
 	private int value;
 	private String progressChar = "*", unprogressChar = "-";
@@ -22,38 +22,39 @@ public class ProgressBar extends Component {
 	public ProgressBar(int max) {
 		this(max, 0);
 	}
+	
 	public ProgressBar(int max, int value) {
-		this(max, value, BorderStyle.sql);
-	}
-	public ProgressBar(int max, int value, BorderStyle style) {
 		super(Alignment.left, new int[] {0, 1, 0, 1});
 		this.max = max;
 		setValue(value);
-		this.style = style;
 	}
 
 
 	@Override
 	protected void print(StringBuilder sb) {
-		final int borderWidth = max + padding[3] + padding[1];
-		// top border
-		sb.append(style.getPiece(BorderPiece.ds));
-		for (int i = 0; i < borderWidth; i++) sb.append(style.getPiece(BorderPiece.da));
-		sb.append(style.getPiece(BorderPiece.sa)).append("\n");
+		final Border b = getBorder();
+		final int borderWidth = this.max + padding[3] + padding[1];
 		
+		final StringBuilder verticalPad = new StringBuilder();
+		verticalPad.append(b.getStyle().getPiece(BorderPiece.ws));
+		for (int w = 0; w < borderWidth; w++)
+			verticalPad.append(this.getPaddingChar());
+		verticalPad.append(b.getStyle().getPiece(BorderPiece.ws)).append("\n");
+		
+		// top border
+		b.drawBorderTop(sb, borderWidth);
+
 		// top padding
 		for (int p = 0; p < this.padding[0]; p++) {
-			sb.append(style.getPiece(BorderPiece.ws));
-			for (int w = 0; w < borderWidth; w++)
-				sb.append(" ");
-			sb.append(style.getPiece(BorderPiece.ws)).append("\n");
+			sb.append(verticalPad);
 		}
+
 		//progress bar
 		for (int h = 0; h < this.progressHeight; h++) {
-			
-			sb.append(style.getPiece(BorderPiece.ws));
+			//left padding
+			sb.append(b.getStyle().getPiece(BorderPiece.ws));
 			for (int p = 0; p < this.padding[3]; p++)
-				sb.append(" ");
+				sb.append(this.getPaddingChar());
 			
 			switch (this.align) {
 			case left: case center:
@@ -65,22 +66,20 @@ public class ProgressBar extends Component {
 				for (int i = 0; i < value; i++) sb.append(progressChar);
 				break;
 			}
+			
+			//right padding
 			for (int p = 0; p < this.padding[1]; p++)
-				sb.append(" ");
-			sb.append(style.getPiece(BorderPiece.ws)).append("\n");
-		
+				sb.append(this.getPaddingChar());
+			sb.append(b.getStyle().getPiece(BorderPiece.ws)).append("\n");
 		}
+		
 		// bottom padding
 		for (int p = 0; p < this.padding[2]; p++) {
-			sb.append(style.getPiece(BorderPiece.ws));
-			for (int w = 0; w < borderWidth; w++)
-				sb.append(" ");
-			sb.append(style.getPiece(BorderPiece.ws)).append("\n");
+			sb.append(verticalPad);
 		}
 		// bottom border
-		sb.append(style.getPiece(BorderPiece.wd));
-		for (int i = 0; i < borderWidth; i++) sb.append(style.getPiece(BorderPiece.da));
-		sb.append(style.getPiece(BorderPiece.wa));
+		b.drawBorderBottom(sb, borderWidth);
+		
 	}
 	
 	public int getMax() {

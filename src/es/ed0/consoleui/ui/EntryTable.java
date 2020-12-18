@@ -25,7 +25,7 @@ public class EntryTable<T> extends Grid {
 		 * <code>entry</code> with index <code>index</code>
 		 * @param index entry index in the list
 		 * @param entry row entry
-		 * @return ArrayList containing one string for every column
+		 * @return ArrayList containing one component for every column
 		 */
 		public ArrayList<Component> getViewForRow(int index, T entry);
 	}

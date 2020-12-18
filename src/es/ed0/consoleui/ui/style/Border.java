@@ -4,6 +4,8 @@ import es.ed0.consoleui.ui.style.BorderStyle.BorderPiece;
 
 public class Border {
 	
+	public final static int TEXT_POS_TOP = 0, TEXT_POS_BOTTOM = 1;
+	
 	private BorderStyle style;
 	private String text;
 	private double textBias;
@@ -18,13 +20,13 @@ public class Border {
 	}
 	
 	public Border (BorderStyle style, String text, double textBias) {
-		this(style, text, 0, 0);
+		this(style, text, 0, TEXT_POS_TOP);
 	}
 	
 	public Border (BorderStyle style, String text, double textBias, int borderTextPos) {
 		this.style = style;
 		this.text = text;
-		this.textBias = textBias > 1 ? 1 : textBias;
+		this.textBias = textBias;
 		this.borderTextPos = borderTextPos;
 	}
 	
@@ -49,7 +51,15 @@ public class Border {
 			if (textWidth > width) textWidth = width;
 			
 			int nonTextWidth = width - textWidth;
-			int nonTextWidthBefore = (int) (nonTextWidth * this.textBias);
+			int nonTextWidthBefore = nonTextWidth;
+			if (this.textBias < 0) {
+				nonTextWidthBefore += this.textBias;
+			} else if (this.textBias >= 1) {// value bigger than one
+				if (this.textBias < nonTextWidth)
+					nonTextWidthBefore = (int) this.textBias;
+			} else { // value is between 0 and 1
+				nonTextWidthBefore *= this.textBias;
+			}
 			int nonTextWidthAfter = nonTextWidth - nonTextWidthBefore;
 			
 			for (int b = 0; b < nonTextWidthBefore; b++) sb.append(style.getPiece(BorderPiece.da));
@@ -80,9 +90,17 @@ public class Border {
 	public double getTextBias() {
 		return textBias;
 	}
-
+	
+	/**
+	 * Set the alignment of the text in the border, this will depend on the value given<br>
+	 * <b>0 to 0.99:</b> The text will align proportionally to the width of the border where 0 is aligned to the left 
+	 * and 1 is aligned to the right<br>
+	 * <b>1 or bigger:</b> The text will be positioned the exact amount of characters from the left<br>
+	 * <b>-1 or smaller:</b> The text will be positioned the exact amount of characters from the right<br>
+	 * @param textBias
+	 */
 	public void setTextBias(double textBias) {
-		this.textBias = textBias > 1 ? 1 : textBias;
+		this.textBias = textBias;
 	}
 
 	public int getBorderTextPos() {
@@ -91,7 +109,7 @@ public class Border {
 	
 	/**
 	 * Set position of border text
-	 * @param borderTextPos 0 = top border, 1 = bottom border
+	 * @param borderTextPos one of Border.TEXT_POS_TOP or Border.TEXT_POS_BOTTOM
 	 */
 	public void setBorderTextPos(int borderTextPos) {
 		this.borderTextPos = borderTextPos;
