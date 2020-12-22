@@ -51,7 +51,7 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 		
 		Text t = new Text("hola texto de prueba lolaasd asd sd asd  asd  sdsdsd  sd sd  ");
 		t.setPadding(1, 3, 1, 3);
-		t.setBorder(new Border(BorderStyle.unicode, "| border tt |", 0.05, 0));
+		t.setBorder(new Border(BorderStyle.unicode, "| border tt |", -4, 0));
 		
 		ui.print(t);
 		
@@ -87,13 +87,13 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 		can.drawCircle(25, 25, 8, 'O', true);
 		
 		
-		ui.print(can);
+		//ui.print(can);
 
-		if (true)return;
+		//if (true)return;
 		
 		
 		
-		TreeView<File> tv = new TreeView<File>(BorderStyle.hollow, new File("C:\\Users\\us3r\\Apache24"), new TreeViewPopulator<File>() {
+		TreeView<File> tv = new TreeView<File>(BorderStyle.unicode, new File("C:\\Users\\us3r\\workspaces"), new TreeViewPopulator<File>() {
 
 			@Override
 			public String getName(File item) {
@@ -111,11 +111,12 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 			
 		});
 		//tv.setPaddingChar(BorderStyle.hollow.getPiece(BorderPiece.da) + " ");
-		tv.setPadding(0, 0, 0, 1);
-		tv.setLeftMargin(6);
+		tv.setPadding(0, 2, 1, 0);
+		tv.setLeftMargin(2);
 		
-		ui.print(tv);
-
+		//ui.print(tv);
+ 
+		//if (true) return;
 		
 		
 		ProgressBar pb = new ProgressBar(20, 2);
@@ -162,10 +163,10 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 		panel.setHeaderAlign(Alignment.right);
 		
 		
-		//ui.print(panel);
-		//ui.print(inside);
+		ui.print(panel);
+		ui.print(inside);
 		
-		//if (true) return;
+		if (true) return;
 		
 		List<Pojo> pojos = Arrays.asList(new Pojo[] {
 				new Pojo("hi", "wadup", 12), new Pojo("holita", "surnamejesadasdsaddasdddddddddddddddddddddddddddddddddddasaadsasddssadadj", 1900),
@@ -192,6 +193,11 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 		//ui.println(table.getRowCount());
 		table.setEnumerate(true);
 		
+		ui.print(table);
+		
+		if (true)return;
+		
+		
 		Panel tablePanel = new Panel(BorderStyle.unicode, "mira que guapa la tabla", table);
 		tablePanel.setHeaderAlign(Alignment.center);
 		//tablePanel.setTileMaxWidth(-1);
@@ -200,7 +206,7 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 				+ "muy largo que se va a tener que dividir en partes pq sinoxd");
 		
 		
-		tablePanel.setTileMaxWidth(20);
+		tablePanel.setTileMaxWidth(100);
 		tablePanel.setPadding(0);
 		
 		ui.print(tablePanel);

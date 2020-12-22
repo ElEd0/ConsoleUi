@@ -69,17 +69,76 @@ public class TreeView<T> extends Component {
 		if (!this.loaded) {
 			this.loadTree();
 		}
-		// TODO draw border
-		for (BorderPiece m : marks)
-			sb.append(style.getPiece(m));
 		
-		for (int p = 0; p < this.padding[3]; p++)
-			sb.append(this.getPaddingChar());
+		// create left and right paddings
+		StringBuilder leftPadding = new StringBuilder(), rightPadding = new StringBuilder();
+		StringBuilder leftPaddingMark = new StringBuilder(), rightPaddingMark = new StringBuilder();
+		for (int p = 0; p < this.padding[3]; p++)  {
+			leftPadding.append(this.getPaddingChar());
+			leftPaddingMark.append(style.getPiece(BorderPiece.da));
+		}
+		for (int p = 0; p < this.padding[1]; p++) {
+			rightPadding.append(this.getPaddingChar());
+			rightPaddingMark.append(style.getPiece(BorderPiece.da));
+		}
+		
+		// create top and bottom paddings
+		StringBuilder bottomPadding = new StringBuilder(), topPadding = new StringBuilder();
+		for (BorderPiece m : marks) {
+			topPadding.append(leftPadding);
+			bottomPadding.append(leftPadding);
+			switch (m) {
+			case wds: case ws: 
+				topPadding.append(style.getPiece(BorderPiece.ws));
+				bottomPadding.append(style.getPiece(BorderPiece.ws));
+				break;
+			case wd: 
+				topPadding.append(style.getPiece(BorderPiece.ws));
+				bottomPadding.append(style.getPiece(BorderPiece.none));
+				break;
+			case da: case none: default: 
+				topPadding.append(style.getPiece(BorderPiece.none));
+				bottomPadding.append(style.getPiece(BorderPiece.none));
+				break;
+			}
+			topPadding.append(rightPadding);
+			bottomPadding.append(rightPadding);
+		}
+		if (sons.size() > 0) {
+			bottomPadding.append(leftPadding);
+			bottomPadding.append(style.getPiece(BorderPiece.ws));
+			bottomPadding.append(rightPadding);
+		}
+
+		// draw top padding
+		if (this.padding[0] > 0) {
+			for (int p = 0; p < this.padding[0]; p++) sb.append(topPadding).append("\n");
+		}
+		
+		
+		// draw symbols before text
+		for (BorderPiece m : marks) {
+			sb.append(leftPadding);
+			sb.append(style.getPiece(m));
+			if (m == BorderPiece.da || m == BorderPiece.wds || m == BorderPiece.wd)
+				sb.append(rightPaddingMark);
+			else
+				sb.append(rightPadding);
+		}
+
+		// draw text
+		sb.append(leftPaddingMark);
 		sb.append(populator.getName(root));
-		for (int p = 0; p < this.padding[1]; p++)
-			sb.append(this.getPaddingChar());
+		sb.append(rightPadding);
+
 		sb.append("\n");
 		
+		// draw bottom padding
+		if (this.padding[2] > 0) {
+			for (int p = 0; p < this.padding[2]; p++) sb.append(bottomPadding).append("\n");
+		}
+		
+		// draw sons
 		if (isOpened())
 			for (TreeView<T> son : sons)
 				son.print(sb);

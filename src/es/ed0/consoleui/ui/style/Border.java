@@ -53,7 +53,9 @@ public class Border {
 			int nonTextWidth = width - textWidth;
 			int nonTextWidthBefore = nonTextWidth;
 			if (this.textBias < 0) {
-				nonTextWidthBefore += this.textBias;
+				int textBiasPos = (int) (this.textBias + 1) * -1;
+				if (textBiasPos > nonTextWidthBefore) textBiasPos = nonTextWidthBefore;
+				nonTextWidthBefore -= textBiasPos;
 			} else if (this.textBias >= 1) {// value bigger than one
 				if (this.textBias < nonTextWidth)
 					nonTextWidthBefore = (int) this.textBias;
@@ -96,7 +98,8 @@ public class Border {
 	 * <b>0 to 0.99:</b> The text will align proportionally to the width of the border where 0 is aligned to the left 
 	 * and 1 is aligned to the right<br>
 	 * <b>1 or bigger:</b> The text will be positioned the exact amount of characters from the left<br>
-	 * <b>-1 or smaller:</b> The text will be positioned the exact amount of characters from the right<br>
+	 * <b>-1 or smaller:</b> The text will be positioned the given amount of characters from the right,
+	 * having that -1 is 0 characters, -2 is 1 character, etc <br>
 	 * @param textBias
 	 */
 	public void setTextBias(double textBias) {

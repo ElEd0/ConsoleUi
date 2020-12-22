@@ -40,6 +40,8 @@ public class ConsoleUi {
 	 * - canvas line +
 	 * - better borders, with title
 	 * - graphs (?)
+	 * - progress last progress char
+	 * - \r repaint console
 	 */
 	
 	private Scanner t;

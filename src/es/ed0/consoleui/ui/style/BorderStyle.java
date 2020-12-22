@@ -6,29 +6,54 @@ package es.ed0.consoleui.ui.style;
 /**
  * 
  */
-public enum BorderStyle {
+public abstract class BorderStyle {
 
 	/**
 	 * +----------------------+<br>
 	 * |                      |<br>
 	 * +----------------------+
 	 */
-	sql,
+	public static BorderStyle sql = new BorderStyle() {
+		@Override
+		public String getPiece(BorderPiece piece) {
+			return new String[] { "+", "|", "+", "+", "+", "+", "+", "+", "-", "+", "+", " " }[piece.toIndex()];
+		}
+	};
 
 	/**
 	 * ┏━━━━━━━━━━━━━━━━━━━━━━┓<br>
 	 * ┃                      ┃<br>
 	 * ┗━━━━━━━━━━━━━━━━━━━━━━┛
 	 */
-	unicode,
+	public static BorderStyle unicode = new BorderStyle() {
+		@Override
+		public String getPiece(BorderPiece piece) {
+			return new String[] { "└", "│", "┘", "├", "┤", "┴", "┼", "┌", "─", "┬", "┐", " " }[piece.toIndex()];
+		}
+	};
 
 	/**
 	 * ╔══════════════════════╗<br>
 	 * ║                      ║<br>
 	 * ╚══════════════════════╝
 	 */
-	hollow, none;
+	public static BorderStyle hollow = new BorderStyle() {
+		@Override
+		public String getPiece(BorderPiece piece) {
+			return new String[] { "╚", "║", "╝", "╠", "╣", "╩", "╬", "╔", "═", "╦", "╗", " " }[piece.toIndex()];
+		}
+	};
 	
+
+	public static BorderStyle none = new BorderStyle() {
+		@Override
+		public String getPiece(BorderPiece piece) {
+			return new String[] { "", "", "", "", "", "", "", "", "", "", "", " " }[piece.toIndex()];
+		}
+	};
+	
+	public abstract String getPiece(BorderPiece piece);
+
 	public enum BorderPiece {
 		wd, ws, wa, wds, wsa, wda, wdsa,
 		ds, da, dsa,
@@ -42,17 +67,6 @@ public enum BorderStyle {
 			default: return 0;
 			}
 		}
-	}
-	
-	public String getPiece(BorderPiece piece) {
-		String[] arr = null;
-		switch (this) {
-		case sql: arr = new String[] { "+", "|", "+", "+", "+", "+", "+", "+", "-", "+", "+", " " }; break;
-		case unicode: arr = new String[] { "└", "│", "┘", "├", "┤", "┴", "┼", "┌", "─", "┬", "┐", " " }; break;
-		case hollow: arr = new String[] { "╚", "║", "╝", "╠", "╣", "╩", "╬", "╔", "═", "╦", "╗", " " }; break;
-		case none: arr = new String[] { "", "", "", "", "", "", "", "", "", "", "", " " }; break;
-		}
-		return arr[piece.toIndex()];
 	}
 	
 	
