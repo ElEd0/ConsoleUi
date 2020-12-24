@@ -15,7 +15,7 @@ public abstract class Component {
 	
 	public String toString() {
 		final StringBuilder content = new StringBuilder();
-		print(content);
+		this.print(content);
 		if (leftMargin != 0) {
 			final StringBuilder tabB = new StringBuilder();
 			for (int t = 0; t < leftMargin; t++) tabB.append(" ");
@@ -36,6 +36,7 @@ public abstract class Component {
 	protected char paddingChar = ' ';
 	protected Alignment align;
 	protected Border border;
+	protected int maxWidth = -1;
 	
 	
 	public Component(Alignment align, int[] padding) {
@@ -164,6 +165,14 @@ public abstract class Component {
 
 	public void setBorder(Border border) {
 		this.border = border;
+	}
+
+	public int getMaxWidth() {
+		return maxWidth;
+	}
+
+	public void setMaxWidth(int maxWidth) {
+		this.maxWidth = maxWidth;
 	}
 
 	public int getWidth() {

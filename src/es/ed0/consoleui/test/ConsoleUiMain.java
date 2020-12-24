@@ -151,7 +151,7 @@ public class ConsoleUiMain implements LineListener, CommandListener {
 		Panel panel = new Panel("Esto es un panel de prubea tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt", new Text(
 				"erase una vez en un lugar de a saber donde que ocurrio una movida to tocha. "
 				+ "erase una vez en un lugar de a saber donde que ocurrio una movida to tocha.\n "
-				+ "erase una vez en un lugar de a saber donde que ocurrio una movida to tocha.", true));
+				+ "erase una vez en un lugar de a saber donde que ocurrio una movida to tocha."));
 		//panel.add(new Separator(50));
 		//panel.add("firmado por el ed0\n");
 		//panel.add(new Separator(50));
